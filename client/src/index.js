@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import Routing from './Routing';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Routing />);
+ReactDOM.render(<React.StrictMode><Routing /></React.StrictMode>, document.getElementById('root'));

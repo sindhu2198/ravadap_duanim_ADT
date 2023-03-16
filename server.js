@@ -1,19 +1,93 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 const cors = require("cors");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "Sindhu2111@",
-  database: "ept_prj",
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/signup', async (req, res) => {
+  console.log("Connected to db")
+  const { username, email, password, role } = req.body;
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Save the user to the database
+  db.query(
+    'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
+    [username, email, hashedPassword, role],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send('Error registering the user.');
+      } else {
+        res.status(201).send('User registered successfully.');
+      }
+    }
+  );
+});
+
+
+app.post('/signin', (req, res) => {
+  const { email, password } = req.body;
+
+  // Find the user in the database
+  db.query(
+    'SELECT * FROM users WHERE email = ?',
+    [email],
+    async (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send('Error signing in.');
+      } else {
+        if (result.length > 0) {
+          const user = result[0];
+
+          // Compare the provided password with the stored password
+          const match = await bcrypt.compare(password, user.password);
+
+          if (match) {
+            // Create a JWT
+            const token = jwt.sign(
+              { id: user.id, role: user.role },
+              process.env.JWT_SECRET,
+              {
+                expiresIn: '1h',
+              }
+            );
+
+            res.status(200).json({
+              token,
+              user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+              },
+            });
+          } else {
+            res.status(401).send('Invalid password.');
+          }
+        } else {
+          res.status(404).send('User not found.');
+        }
+      }
+    }
+  );
+});
 
 app.get("/api/get", (req, res) => {
   const sqlGet = "SELECT * FROM employee_data";

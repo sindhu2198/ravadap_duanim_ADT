@@ -6,6 +6,8 @@ import "./App1.css";
 import Reports from "./Reports";
 import App from "./App"
 import CreateEmp from './CreateEmp';
+import Signup from './Signup';
+import Signin from './Signin';
 
 function Routing() {
   return (
@@ -16,7 +18,8 @@ function Routing() {
          
           <Route path="/Reports" element={<Reports />} />
           <Route path="/Create" element={<CreateEmp />} />
-          
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Signin" element={<Signin />} />
         </Routes>
       </BrowserRouter>
     

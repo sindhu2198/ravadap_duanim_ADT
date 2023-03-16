@@ -31,10 +31,11 @@ const Hamburgermenu = () => {
       {showMenu && (
         <div className="menu-items">
           <a href="/">HOME</a>
-          <a href="/about">CREATE EMPLOYEE</a>
-          <a href="/contact">GET EMPLOYEE</a>
-          <a href="/contact">UPDATE EMPLOYEE</a>
-          <a href="/contact">DELETE EMPLOYEE</a>
+          <a href="/Create">CREATE EMPLOYEE</a>
+          <a href="/get/:id">GET EMPLOYEE</a>
+          <a href="/update/:id">UPDATE EMPLOYEE</a>
+          <a href="/delete">DELETE EMPLOYEE</a>
+          <a href="/getall">GET ALL EMPLOYEES</a>
         </div>
       )}
     </div>

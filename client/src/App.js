@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import './App.css';
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Signin from "./Signin";
 
 function HomePage() {
   const aboutRef = useRef(null);
@@ -37,23 +38,18 @@ function HomePage() {
         </nav>
       </header>
       <div className="login-form-container">
-        <h1>Login</h1>
-        <form className="form">
-          <label>Email:</label>
-          <input type="email" name="email" />
-
-          <label>Password:</label>
-          <input type="password" name="password" />
-
-          <button>Login</button>
+      
+         <Signin />
+        <Link to="/Signup">
+        <button>SignUp</button>
+        </Link>
           <br />
           <br />
-          <Link to="/Reports">
-            <button>Reports</button>
-          </Link>
-        </form>
+        <Link to="/Reports">
+        <button>Reports</button>
+        </Link>
       </div>
-
+     
       <div className="content">
       
         
