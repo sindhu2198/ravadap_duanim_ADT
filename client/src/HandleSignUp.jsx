@@ -1,11 +1,11 @@
-import React from 'react';
+// import React from 'react';
 
-const HandleSignUp = ({ handleSignUp }) => {
-  return (
-    <div>
-      <button onClick={handleSignUp}>Sign Up</button>
-    </div>
-  );
-};
+// const HandleSignUp = ({ handleSignUp }) => {
+//   return (
+//     <div>
+//       <button onClick={handleSignUp}>Sign Up</button>
+//     </div>
+//   );
+// };
 
-export default HandleSignUp;
+// export default HandleSignUp;
