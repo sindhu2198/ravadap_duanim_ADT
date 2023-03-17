@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import "./GetEmp.css";
-
+const RatingBarChart = ({ data }) => {
+    return (
+      <BarChart
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 20, right: 30, left: 20, bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="rating" fill="#8884d8" />
+      </BarChart>
+    );
+  };
 const GetEmp = () => {
   const [user, setUser] = useState({});
   const [inputID, setInputID] = useState("");
@@ -27,6 +46,11 @@ const GetEmp = () => {
     e.preventDefault();
     navigate(`/GetEmp/${inputID}`);
   };
+  const ratingData = [
+    { name: "2021", rating: user.rating_2021 },
+    { name: "2022", rating: user.rating_2022 },
+    { name: "2023", rating: user.rating_2023 },
+  ];
   console.log("User object:", user);
   return (
     <div style={{ marginTop: "150px" }}>
@@ -76,21 +100,25 @@ const GetEmp = () => {
             <br />
             <br />
             <strong>Salary in 2023(if any): </strong>
-            <span>{user.salary_2023}</span>
+            <span>{user.Salary_2023}</span>
             <br />
             <br />
             <strong>Salary in 2022(if any): </strong>
-            <span>{user.salary_2022}</span>
+            <span>{user.Salary_2022}</span>
             <br />
             <br />
             <strong>Salary in 2021(if any): </strong>
-            <span>{user.salary_2021}</span>
+            <span>{user.Salary_2021}</span>
             <br />
             <br />
             <strong>Comments provided: </strong>
             <span>{user.Comments}</span>
             <br />
             <br />
+            <Link to="#rating-bar-chart" className="chart-link">View Ratings Chart</Link>
+      <div id="rating-bar-chart" style={{ marginTop: "20px" }}>
+        <RatingBarChart data={ratingData} />
+      </div>
             <Link to="/">
               <div className="btn btn-edit">Go Back</div>
             </Link>          
