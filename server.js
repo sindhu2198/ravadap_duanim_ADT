@@ -120,16 +120,19 @@ app.delete("/api/remove/:id", (req, res) => {
   });
 });
 
-app.get("/api/get/:id", (req, res) => {
-  const { id } = req.params;
+app.get("/api/get/:EID", (req, res) => {
+  const { EID } = req.params;
+  console.log("Requested EID:", EID); // Log the requested EID
   const sqlGet = "SELECT * FROM employee_data WHERE EID = ?";
-  db.query(sqlGet, id, (error, result) => {
+  db.query(sqlGet, EID, (error, result) => {
     if (error) {
       console.log(error);
     }
+    console.log("Result from database:", result); // Log the result from the database
     res.send(result);
   });
 });
+
 
 app.put("/api/update/:id", (req, res) => {
     const { id } = req.params;

@@ -8,6 +8,8 @@ import App from "./App"
 import CreateEmp from './CreateEmp';
 import Signup from './Signup';
 import Signin from './Signin';
+import GetEmp from './GetEmp';
+import Dashboardpage from './Dashboardpage';
 
 function Routing() {
   return (
@@ -18,8 +20,11 @@ function Routing() {
          
           <Route path="/Reports" element={<Reports />} />
           <Route path="/Create" element={<CreateEmp />} />
+          <Route path="/GetEmp" element={<GetEmp />} />
+          <Route path="/GetEmp/:EID" element={<GetEmp />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Signin" element={<Signin />} />
+          <Route path="/Dashboardpage" element={<Dashboardpage />} />
         </Routes>
       </BrowserRouter>
     

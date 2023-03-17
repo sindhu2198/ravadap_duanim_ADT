@@ -32,7 +32,7 @@ const Hamburgermenu = () => {
         <div className="menu-items">
           <a href="/">HOME</a>
           <a href="/Create">CREATE EMPLOYEE</a>
-          <a href="/get/:id">GET EMPLOYEE</a>
+          <a href="/GetEmp">GET EMPLOYEE</a>
           <a href="/update/:id">UPDATE EMPLOYEE</a>
           <a href="/delete">DELETE EMPLOYEE</a>
           <a href="/getall">GET ALL EMPLOYEES</a>
