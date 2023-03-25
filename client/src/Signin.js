@@ -18,9 +18,12 @@ const Signin = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5001/signin', formData);
+      console.log(response.data);
       localStorage.setItem('token', response.data.token);
       alert('Signin successfully done.');
       localStorage.setItem('userRole', response.data.user.role);
+      localStorage.setItem('employeeId', response.data.user.id);
+      console.log(localStorage);
       // Redirect to the desired page or display a success message
       navigate('/Dashboardpage');
     } catch (error) {

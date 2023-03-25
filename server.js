@@ -62,7 +62,7 @@ app.post('/signin', (req, res) => {
           if (match) {
             // Create a JWT
             const token = jwt.sign(
-              { id: user.id, role: user.role },
+              { id: user.id, role: user.role, employeeId: user.id },
               process.env.JWT_SECRET,
               {
                 expiresIn: '1h',
@@ -76,6 +76,7 @@ app.post('/signin', (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
+                employeeId:user.id
               },
             });
           } else {
