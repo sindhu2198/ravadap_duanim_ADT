@@ -31,7 +31,7 @@ app.post('/signup', async (req, res) => {
     [username, email, hashedPassword, role],
     (err, result) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         res.status(400).send('Error registering the user.');
       } else {
         res.status(201).send('User registered successfully.');
@@ -97,18 +97,105 @@ app.get("/api/get", (req, res) => {
   });
 });
 
-app.post("/api/post", (req, res) => {
-  const { Name, Email, location, rating_2023, rating_2022, rating_2021, Salary_2023, Salary_2022, Salary_2021, Comments } = req.body;
-  console.log(req.body); 
-  const sqlInsert =
-    "INSERT INTO employee_data (EID, Name,Email,location,rating_2023,rating_2022,rating_2021,Salary_2023,Salary_2022,Salary_2021,Comments) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  db.query(sqlInsert, [Name, Email, location, rating_2023, rating_2022, rating_2021, Salary_2023, Salary_2022, Salary_2021, Comments], (error, result) => {
-    if (error) {
-      console.log(error);
+// ... other imports and configurations
+
+app.post("/api/post", async (req, res) => {
+  const { Name, Email, years } = req.body;
+
+  // Get a connection from the pool
+  const connection = await db.promise().getConnection();
+
+  try {
+    // Check if the email already exists in the employee table
+    const checkEmailQuery = `SELECT EID FROM employee WHERE Email = ?`;
+    const [emailResult] = await connection.query(checkEmailQuery, [Email]);
+
+    // If the email already exists, return an error message
+    if (emailResult.length > 0) {
+      return res.status(400).send("Email already exists. Please use a different email.");
     }
-    res.send(result);
-  });
+
+    // Begin transaction
+    await connection.beginTransaction();
+
+    // If the email doesn't exist, insert the new employee
+    const insertEmployeeQuery = `
+      INSERT INTO employee (Name, Email)
+      VALUES (?, ?)
+    `;
+    const [employeeResult] = await connection.query(insertEmployeeQuery, [Name, Email]);
+    const EID = employeeResult.insertId;
+
+    for (let yearObj of years) {
+      const { year, projects, rating, salary, Comments } = yearObj;
+
+      // Insert the salary data
+      const insertSalaryQuery = `
+        INSERT INTO salary (EID, year, salary)
+        VALUES (?, ?, ?)
+      `;
+      await connection.query(insertSalaryQuery, [EID, year, salary]);
+
+      // Insert the performance review data
+      const insertPerformanceReviewQuery = `
+        INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
+        VALUES (?, NOW(), "sindhu", ?, ?)
+      `;
+      await connection.query(insertPerformanceReviewQuery, [EID, rating, Comments]);
+
+      // Add projects and project_employee entries
+      const insertProjectEmployeeQuery = `
+        INSERT INTO project_employee (project_id, project_name, EID, year)
+        VALUES ((SELECT id FROM project WHERE project_name = ?), ?, ?, ?);
+      `;
+
+      // Insert the project performance review data
+      const insertProjectPerformanceReviewQuery = `
+        INSERT INTO project_performance_review (employee_id, project_name, year, rating, salary, comments)
+        VALUES (?, ?, ?, ?, ?, ?);
+      `;
+
+      for (let project of projects) {
+        if (!project || project.trim() === "") {
+          console.log("Project object:", project);
+          console.error("Project name is NULL. Skipping this iteration.");
+          continue;
+        }
+        console.log("Inserting project_employee entry for:", project);
+        await connection.query(
+          insertProjectEmployeeQuery,
+          [project, project, EID, year]
+        );
+      
+        // Add the project performance review entry
+        await connection.query(
+          insertProjectPerformanceReviewQuery,
+          [EID, project, year, rating, salary, Comments]
+        );
+      }
+      
+    }
+
+    // Commit transaction
+    await connection.commit();
+
+    // Send success response
+    res.sendStatus(200);
+
+  } catch (err) {
+    // Roll back transaction if an error occurred
+    await connection.rollback();
+
+    console.error("Error in /api/post:", err);
+    res.status(500).send(err);
+  } finally {
+    // Release the connection back to the pool
+    connection.release();
+  }
 });
+
+
+
 
 
 app.delete("/api/remove/:id", (req, res) => {
@@ -124,7 +211,7 @@ app.delete("/api/remove/:id", (req, res) => {
 app.get("/api/get/:EID", (req, res) => {
   const { EID } = req.params;
   console.log("Requested EID:", EID); // Log the requested EID
-  const sqlGet = "SELECT * FROM employee_data WHERE EID = ?";
+  const sqlGet = "SELECT * FROM get_employee_details WHERE EID = ?";
   db.query(sqlGet, EID, (error, result) => {
     if (error) {
       console.log(error);

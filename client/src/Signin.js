@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 
 const Signin = () => {
@@ -52,7 +53,8 @@ const Signin = () => {
             onChange={handleChange}
           />
       
-          <button type="submit">Login</button>
+      <button type="submit" className="login-button">Login</button>
+      <Link to="/Signup"><button type="submit" className="signup-button">SignUp</button></Link>
         </form>
       );
       

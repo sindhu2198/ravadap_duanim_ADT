@@ -3,6 +3,7 @@ import './App.css';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Signin from "./Signin";
+import Signup from "./Signup";
 
 function HomePage() {
   const aboutRef = useRef(null);
@@ -25,11 +26,6 @@ function HomePage() {
               </button>
             </li>
             <li>
-              <button className="nav-button" onClick={() => handleNavigation(projectsRef)}>
-                Projects
-              </button>
-            </li>
-            <li>
               <button className="nav-button" onClick={() => handleNavigation(contactRef)}>
                 Contact
               </button>
@@ -40,14 +36,8 @@ function HomePage() {
       <div className="login-form-container">
       
          <Signin />
-        <Link to="/Signup">
-        <button>SignUp</button>
-        </Link>
-          <br />
-          <br />
-        <Link to="/Reports">
-        <button>Reports</button>
-        </Link>
+         
+        
       </div>
      
       <div className="content">
