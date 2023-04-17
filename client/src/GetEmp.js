@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import "./GetEmp.css";
+import Hamburgermenu from "./Hamburgermenu";
 const RatingBarChart = ({ data }) => {
     return (
       <BarChart
@@ -27,6 +28,9 @@ const RatingBarChart = ({ data }) => {
       EID: "",
       Name: "",
       Email: "",
+      projects_2021:"",
+      projects_2022:"",
+      projects_2023:"",
       location: "",
       rating_2021: "",
       rating_2022: "",
@@ -34,13 +38,16 @@ const RatingBarChart = ({ data }) => {
       Salary_2021: "",
       Salary_2022: "",
       Salary_2023: "",
-      Comments: "",
+      Comments_2021: "",
+      Comments_2022: "",
+      Comments_2023: "",
     });
     const [inputID, setInputID] = useState("");
     const { EID } = useParams();
     const navigate = useNavigate();
   
     useEffect(() => {
+      console.log("EID value:", EID); // Add this line
       if (EID) {
         axios
           .get(`http://localhost:5001/api/get/${EID}`)
@@ -65,7 +72,15 @@ const RatingBarChart = ({ data }) => {
     ];
     console.log("User object:", user);
   return (
+    <div className="get-employee">
     <div style={{ marginTop: "150px" }}>
+   
+      <div className="app">
+      <header className="header">
+        <Hamburgermenu />
+        <div className="logo">SKILL SNAPSHOT</div>
+      </header>
+    </div>
       <div className="card">
         <div className="card-header">
           <p>Employee Details</p>
@@ -95,6 +110,18 @@ const RatingBarChart = ({ data }) => {
             <span>{user.Email}</span>
             <br />
             <br />
+            <strong>Employee Projects in 2021: </strong>
+            <span>{user.projects_2021}</span>
+            <br />
+            <br />
+            <strong>Employee Projects in 2022: </strong>
+            <span>{user.projects_2022}</span>
+            <br />
+            <br />
+            <strong>Employee Projects in 2023: </strong>
+            <span>{user.projects_2023}</span>
+            <br />
+            <br />
             <strong>Rating in 2023(if any): </strong>
             <span>{user.rating_2023}</span>
             <br />
@@ -119,8 +146,16 @@ const RatingBarChart = ({ data }) => {
             <span>{user.salary_2021}</span>
             <br />
             <br />
-            <strong>Comments provided: </strong>
-            <span>{user.Comments}</span>
+            <strong>Comments provided in 2021: </strong>
+            <span>{user.Comments_2021}</span>
+            <br />
+            <br />
+            <strong>Comments provided in 2022: </strong>
+            <span>{user.Comments_2022}</span>
+            <br />
+            <br />
+            <strong>Comments provided in 2023: </strong>
+            <span>{user.Comments_2023}</span>
             <br />
             <br />
             <Link to="#rating-bar-chart" className="chart-link">View Ratings Chart</Link>
@@ -133,6 +168,7 @@ const RatingBarChart = ({ data }) => {
             </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

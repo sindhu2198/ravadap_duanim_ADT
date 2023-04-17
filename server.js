@@ -91,7 +91,7 @@ app.post('/signin', (req, res) => {
 });
 
 app.get("/api/get", (req, res) => {
-  const sqlGet = "SELECT * FROM employee_data";
+  const sqlGet = "SELECT * FROM get_employee_details";
   db.query(sqlGet, (error, result) => {
     res.send(result);
   });
@@ -139,7 +139,7 @@ app.post("/api/post", async (req, res) => {
       // Insert the performance review data
       const insertPerformanceReviewQuery = `
         INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
-        VALUES (?, NOW(), "sindhu", ?, ?)
+        VALUES (?, curdate(), "sindhu", ?, ?)
       `;
       await connection.query(insertPerformanceReviewQuery, [EID, rating, Comments]);
 
@@ -151,8 +151,8 @@ app.post("/api/post", async (req, res) => {
 
       // Insert the project performance review data
       const insertProjectPerformanceReviewQuery = `
-        INSERT INTO project_performance_review (employee_id, project_name, year, rating, salary, comments)
-        VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO project_performance_review (employee_id, project_name, year, rating, salary, comments,performance_review_date)
+        VALUES (?, ?, ?, ?, ?, ?,curdate());
       `;
 
       for (let project of projects) {
@@ -170,7 +170,7 @@ app.post("/api/post", async (req, res) => {
         // Add the project performance review entry
         await connection.query(
           insertProjectPerformanceReviewQuery,
-          [EID, project, year, rating, salary, Comments]
+          [EID, project, year, rating, salary, Comments, performance_review_date]
         );
       }
       
@@ -221,18 +221,217 @@ app.get("/api/get/:EID", (req, res) => {
   });
 });
 
+// app.put("/api/update/:EID", async (req, res) => {
+//   const { EID } = req.params;
+//   const { Name, Email, years } = req.body;
+  
+//   console.log('Request body:', req.body);
+//   // Get a connection from the pool
+//   const connection = await db.promise().getConnection();
 
-app.put("/api/update/:id", (req, res) => {
-    const { id } = req.params;
-    const {name, email, contact} = req.body;
-    const sqlUpdate = "UPDATE employee_data SET EName = ?, EEmail = ?, ELocation = ? WHERE EID = ?";
-    db.query(sqlUpdate, [name, email, contact, id], (error, result) => {
-      if (error) {
-        console.log(error);
+//   try {
+//     // Begin transaction
+//     await connection.beginTransaction();
+
+//     // Update employee's name and email
+//     const updateEmployeeQuery = `
+//       UPDATE employee
+//       SET Name = ?, Email = ?
+//       WHERE EID = ?
+//     `;
+//     const [employeeResult] = await connection.query(updateEmployeeQuery, [Name, Email, EID]);
+//     console.log('Employee update result:', employeeResult);
+   
+
+//     // Loop through years data
+//     for (let yearObj of years) {
+//       const { year, projects, rating, salary, Comments } = yearObj;
+      
+//       // Update salary data
+//       if (salary !== null) {
+//         const updateSalaryQuery = `
+//           UPDATE salary
+//           SET salary = ?
+//           WHERE EID = ? AND year = ?
+//         `;
+//         const [salaryResult] = await connection.query(updateSalaryQuery, [salary, EID, year]);
+//         console.log('Employee update salary:', salaryResult);
+//       }
+
+//       // Update performance review data
+//       if (rating !== null && Comments !== null) {
+//         const updatePerformanceReviewQuery = `
+//           UPDATE performance_review
+//           SET rating = ?, Comments = ?
+//           WHERE EID = ? AND YEAR(performance_review_date) = ?
+//         `;
+//         const [performanceResult] = await connection.query(updatePerformanceReviewQuery, [rating, Comments, EID, year]);
+//         console.log('Employee update Performance:', performanceResult);
+//       }
+
+//       // Update project_employee data
+//       for (let project of projects) {
+
+//         const checkProjectPerformanceReviewQuery = `
+//         SELECT * FROM project_performance_review
+//         WHERE employee_id = ? AND year = ?
+//       `;
+//       const [checkProjectPerformanceReviewResult] = await connection.query(checkProjectPerformanceReviewQuery, [EID, year, project]);
+//       console.log('Check project_performance_review before update:', checkProjectPerformanceReviewResult);
+//         const updateProjectEmployeeQuery = `
+//           UPDATE project_employee
+//           SET project_name = ?
+//           WHERE EID = ? AND year = ?
+//         `;
+//         const [projectEmployeeResult] = await connection.query(updateProjectEmployeeQuery, [project, EID, year]);
+//         console.log('Employee update project_employee:', projectEmployeeResult);
+//       }
+
+//       // Update project_performance_review data
+//       for (let project of projects) {
+//         if (rating !== null || salary !== null || Comments !== null) {
+//           console.log("project", project);
+//           const updateProjectPerformanceReviewQuery = `
+//             UPDATE project_performance_review
+//             SET rating = COALESCE(?, rating), salary = COALESCE(?, salary), Comments = COALESCE(?, Comments), project_name = COALESCE(?, project_name)
+//             WHERE employee_id = ? AND year = ?
+//           `;
+//           console.log('Updating project_performance_review with values:', rating, salary, Comments,project, EID, year );
+// const [projectPerformanceResult] = await connection.query(updateProjectPerformanceReviewQuery, [rating !== null ? rating : null, salary !== null ? salary : null, Comments !== undefined ? Comments : null,project!== undefined ? project : null, EID, year]);
+
+          
+//           console.log('Employee update project_performance_review:', projectPerformanceResult);
+//         }
+//       }
+      
+//     }
+
+//     // Commit transaction
+//     await connection.commit();
+
+//     // Send success response
+//     res.sendStatus(200);
+
+//   } catch (err) {
+//     // Roll back transaction if an error occurred
+//     await connection.rollback();
+
+//     console.error("Error in /api/update/:EID:", err);
+//     res.status(500).send(err);
+//   } finally {
+//     // Release the connection back to the pool
+//     connection.release();
+//   }
+// });
+
+app.put("/api/update/:EID", async (req, res) => {
+  const { EID } = req.params;
+  const { Name, Email, years } = req.body;
+
+  console.log('Request body:', req.body);
+  // Get a connection from the pool
+  const connection = await db.promise().getConnection();
+
+  try {
+    // Begin transaction
+    await connection.beginTransaction();
+
+    // Update employee's name and email
+    const updateEmployeeQuery = `
+      INSERT INTO employee (EID, Name, Email)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        Name = VALUES(Name),
+        Email = VALUES(Email)
+    `;
+    const [employeeResult] = await connection.query(updateEmployeeQuery, [EID, Name, Email]);
+    console.log('Employee update result:', employeeResult);
+
+    // Loop through years data
+    for (let yearObj of years) {
+      const { year, projects, rating, salary, Comments } = yearObj;
+
+      // Update salary data
+      if (salary !== null) {
+        const updateSalaryQuery = `
+          INSERT INTO salary (EID, year, salary)
+          VALUES (?, ?, ?)
+          ON DUPLICATE KEY UPDATE
+            salary = VALUES(salary)
+        `;
+        const [salaryResult] = await connection.query(updateSalaryQuery, [EID, year, salary]);
+        console.log('Employee update salary:', salaryResult);
       }
-      res.send(result);
+
+      // Update performance review data
+      if (rating !== null && Comments !== null) {
+        const insertOrUpdatePerformanceReviewQuery = `
+  INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
+  VALUES (?, ?, ?, ?, ?)
+  ON DUPLICATE KEY UPDATE
+    rating = VALUES(rating),
+    Comments = VALUES(Comments)
+`;
+const [performanceResult] = await connection.query(insertOrUpdatePerformanceReviewQuery, [EID, new Date(), 'sindhu', rating, Comments]);
+
+
+        console.log('Employee update Performance:', performanceResult);
+      }
+        
+      // Update project_employee and project_performance_review data
+      for (let project of projects) {
+        const getProjectIdQuery = `
+  SELECT id FROM project
+  WHERE project_name = ?
+`;
+const [projectIdResult] = await connection.query(getProjectIdQuery, [project]);
+const projectId = projectIdResult[0].id;
+
+const insertOrUpdateProjectEmployeeQuery = `
+INSERT INTO project_employee (EID, year, project_name, project_id)
+VALUES (?, ?, ?, ?)
+ON DUPLICATE KEY UPDATE
+  project_name = VALUES(project_name),
+  project_id = VALUES(project_id)
+`;
+const [projectEmployeeResult] = await connection.query(insertOrUpdateProjectEmployeeQuery, [EID, year, project, projectId]);
+
+        console.log('Employee update project_employee:', projectEmployeeResult);
+
+        const updateProjectPerformanceReviewQuery = `
+        INSERT INTO project_performance_review (employee_id, year, project_name, rating, salary, Comments, performance_review_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          rating = COALESCE(VALUES(rating), rating),
+          salary = COALESCE(VALUES(salary), salary),
+          Comments = COALESCE(VALUES(Comments), Comments),
+          performance_review_date = COALESCE(VALUES(performance_review_date), performance_review_date)
+      `;
+      
+        const [projectPerformanceResult] = await connection.query(updateProjectPerformanceReviewQuery, [EID, year, project, rating, salary, Comments,new Date()]);
+        console.log('Employee update project_performance_review:', projectPerformanceResult);
+      }
+    }
+
+    // Commit transaction
+    await connection.commit();
+
+    // Send success response
+    res.sendStatus(200);
+
+  } catch (err) {
+    // Roll back transaction if an error occurred
+    await connection.rollback();
+
+    console.error("Error in /api/update/:EID:", err);
+    res.status(500).send(err);
+    } finally {
+    // Release the connection back to the pool
+    connection.release();
+    }
     });
-  });
+
+
 
 app.get("/", (req, res) => {
   //   const sqlInsert =

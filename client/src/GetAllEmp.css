@@ -61,4 +61,17 @@
   .btn:hover {
     background-color: #45a049;
   }
+
+  .get-all-employee {
+    background-image: url("./Images/all.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
   

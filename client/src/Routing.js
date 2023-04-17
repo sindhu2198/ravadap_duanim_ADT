@@ -12,6 +12,8 @@ import GetEmp from './GetEmp';
 import Dashboardpage from './Dashboardpage';
 import GetAllEmp from './GetAllEmp';
 import EmployeeReportCharts from './EmployeeReportCharts';
+import UpdateEmp from './UpdateEmp';
+import FetchEmp  from './FetchEmp';
 
 function Routing() {
   return (
@@ -28,6 +30,8 @@ function Routing() {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Signin" element={<Signin />} />
           <Route path="/Dashboardpage" element={<Dashboardpage />} />
+          <Route path="/fetch" element={<FetchEmp />} />
+          <Route path="/update/:EID" element={<UpdateEmp />} />
           <Route path="/EmployeeReportCharts/:EID" element={<EmployeeReportCharts />} />
         </Routes>
       </BrowserRouter>
