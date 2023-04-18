@@ -59,21 +59,21 @@ const UpdateEmp = () => {
               projects: user.projects_2021 ? user.projects_2021.split(',') : [],
               rating: user.rating_2021,
               salary: user.salary_2021,
-              comments: user.comments_2021,
+              Comments: user.comments_2021,
             },
             {
               year: 2022,
               projects: user.projects_2022 ? user.projects_2022.split(',') : [],
               rating: user.rating_2022,
               salary: user.salary_2022,
-              comments: user.comments_2022,
+              Comments: user.comments_2022,
             },
             {
               year: 2023,
               projects: user.projects_2023 ? user.projects_2023.split(',') : [],
               rating: user.rating_2023,
               salary: user.salary_2023,
-              comments: user.comments_2023,
+              Comments: user.comments_2023,
             },
           ],
       };
@@ -215,8 +215,8 @@ const UpdateEmp = () => {
 <br/>
 <textarea
   id="comments_2023"
-  name="Comments_2023"
-  value={user.Comments_2023}
+  name="comments_2023"
+  value={user.comments_2023}
   onChange={handleChange}
 />
 <br />
@@ -224,8 +224,8 @@ const UpdateEmp = () => {
 <br/>
 <textarea
   id="comments_2022"
-  name="Comments_2022"
-  value={user.Comments_2022}
+  name="comments_2022"
+  value={user.comments_2022}
   onChange={handleChange}
 />
 <br />
@@ -233,8 +233,8 @@ const UpdateEmp = () => {
 <br/>
 <textarea
   id="comments_2021"
-  name="Comments_2021"
-  value={user.Comments_2021}
+  name="comments_2021"
+  value={user.comments_2021}
   onChange={handleChange}
 />
 <br />

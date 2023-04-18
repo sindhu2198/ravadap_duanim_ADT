@@ -363,54 +363,55 @@ app.put("/api/update/:EID", async (req, res) => {
         console.log('Employee update salary:', salaryResult);
       }
 
-      // Update performance review data
-      if (rating !== null && Comments !== null) {
+      if (rating !== null || Comments !== undefined) {
+        console.log('Year object:', yearObj);
         const insertOrUpdatePerformanceReviewQuery = `
-  INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
-  VALUES (?, ?, ?, ?, ?)
-  ON DUPLICATE KEY UPDATE
-    rating = VALUES(rating),
-    Comments = VALUES(Comments)
-`;
-const [performanceResult] = await connection.query(insertOrUpdatePerformanceReviewQuery, [EID, new Date(), 'sindhu', rating, Comments]);
-
-
+          INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
+          VALUES (?, ?, ?, ?, ?)
+          ON DUPLICATE KEY UPDATE
+            rating = VALUES(rating),
+            Comments = VALUES(Comments)
+        `;
+        const [performanceResult] = await connection.query(insertOrUpdatePerformanceReviewQuery, [EID, new Date(), 'sindhu', rating, Comments]);
         console.log('Employee update Performance:', performanceResult);
       }
-        
+      
       // Update project_employee and project_performance_review data
       for (let project of projects) {
         const getProjectIdQuery = `
-  SELECT id FROM project
-  WHERE project_name = ?
-`;
-const [projectIdResult] = await connection.query(getProjectIdQuery, [project]);
-const projectId = projectIdResult[0].id;
-
-const insertOrUpdateProjectEmployeeQuery = `
-INSERT INTO project_employee (EID, year, project_name, project_id)
-VALUES (?, ?, ?, ?)
-ON DUPLICATE KEY UPDATE
-  project_name = VALUES(project_name),
-  project_id = VALUES(project_id)
-`;
-const [projectEmployeeResult] = await connection.query(insertOrUpdateProjectEmployeeQuery, [EID, year, project, projectId]);
-
-        console.log('Employee update project_employee:', projectEmployeeResult);
-
-        const updateProjectPerformanceReviewQuery = `
-        INSERT INTO project_performance_review (employee_id, year, project_name, rating, salary, Comments, performance_review_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          rating = COALESCE(VALUES(rating), rating),
-          salary = COALESCE(VALUES(salary), salary),
-          Comments = COALESCE(VALUES(Comments), Comments),
-          performance_review_date = COALESCE(VALUES(performance_review_date), performance_review_date)
-      `;
+          SELECT id FROM project
+          WHERE project_name = ?
+        `;
+        const [projectIdResult] = await connection.query(getProjectIdQuery, [project]);
+        const projectId = projectIdResult[0].id;
       
-        const [projectPerformanceResult] = await connection.query(updateProjectPerformanceReviewQuery, [EID, year, project, rating, salary, Comments,new Date()]);
+        const insertOrUpdateProjectEmployeeQuery = `
+          INSERT INTO project_employee (EID, year, project_name, project_id)
+          VALUES (?, ?, ?, ?)
+          ON DUPLICATE KEY UPDATE
+            project_name = VALUES(project_name),
+            project_id = VALUES(project_id)
+        `;
+        const [projectEmployeeResult] = await connection.query(insertOrUpdateProjectEmployeeQuery, [EID, year, project, projectId]);
+        console.log('Employee update project_employee:', projectEmployeeResult);
+      
+        const updateProjectPerformanceReviewQuery = `
+          INSERT INTO project_performance_review (employee_id, year, project_name, rating, salary, Comments, performance_review_date)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+          ON DUPLICATE KEY UPDATE
+            rating = COALESCE(VALUES(rating), rating),
+            salary = COALESCE(VALUES(salary), salary),
+            Comments = COALESCE(VALUES(Comments), Comments),
+            performance_review_date = COALESCE(VALUES(performance_review_date), performance_review_date)
+        `;
+      
+        const [projectPerformanceResult] = await connection.query(updateProjectPerformanceReviewQuery, [EID, year, project, rating, salary, Comments, new Date()]);
         console.log('Employee update project_performance_review:', projectPerformanceResult);
+        console.log('Comments in performance_review table:', Comments);
       }
+      
+      
+     
     }
 
     // Commit transaction
