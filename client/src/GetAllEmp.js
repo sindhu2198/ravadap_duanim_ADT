@@ -41,7 +41,6 @@ const GetAllEmp = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Review Date</th>
-                <th>Reviewer Name</th>
                 <th>Projects in 2023</th>
                 <th>Projects in 2022</th> 
                 <th>Projects in 2021</th>     
@@ -63,8 +62,7 @@ const GetAllEmp = () => {
                   <td>{employee.EID}</td>
                   <td>{employee.Name}</td>
                   <td>{employee.Email}</td>
-                  <td>{employee.performance_review_date}</td>                  
-                  <td>{employee.reviewer_name}</td>
+                  <td>{employee.latest_review_date ? new Date(employee.latest_review_date).toISOString().slice(0, 10) : 'N/A'}</td>             
                   <td>{employee.projects_2021}</td>
                   <td>{employee.projects_2022}</td>
                   <td>{employee.projects_2023}</td>
@@ -74,9 +72,9 @@ const GetAllEmp = () => {
                   <td>{employee.rating_2023}</td>
                   <td>{employee.rating_2022}</td>
                   <td>{employee.rating_2021}</td>
-                  <td>{employee.Comments_2021}</td>
-                  <td>{employee.Comments_2022}</td>
-                  <td>{employee.Comments_2023}</td>
+                  <td>{employee.comments_2021}</td>
+                  <td>{employee.comments_2022}</td>
+                  <td>{employee.comments_2023}</td>
                   <td>
         <Link to={`/EmployeeReportCharts/${employee.EID}`}>View Report</Link>
       </td>

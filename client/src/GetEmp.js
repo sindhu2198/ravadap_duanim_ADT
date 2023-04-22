@@ -38,9 +38,9 @@ const RatingBarChart = ({ data }) => {
       Salary_2021: "",
       Salary_2022: "",
       Salary_2023: "",
-      Comments_2021: "",
-      Comments_2022: "",
-      Comments_2023: "",
+      comments_2021: "",
+      comments_2022: "",
+      comments_2023: "",
     });
     const [inputID, setInputID] = useState("");
     const { EID } = useParams();
@@ -76,10 +76,9 @@ const RatingBarChart = ({ data }) => {
     <div style={{ marginTop: "150px" }}>
    
       <div className="app">
-      <header className="header">
-        <Hamburgermenu />
+      
         <div className="logo">SKILL SNAPSHOT</div>
-      </header>
+      
     </div>
       <div className="card">
         <div className="card-header">
@@ -147,15 +146,15 @@ const RatingBarChart = ({ data }) => {
             <br />
             <br />
             <strong>Comments provided in 2021: </strong>
-            <span>{user.Comments_2021}</span>
+            <span>{user.comments_2021}</span>
             <br />
             <br />
             <strong>Comments provided in 2022: </strong>
-            <span>{user.Comments_2022}</span>
+            <span>{user.comments_2022}</span>
             <br />
             <br />
             <strong>Comments provided in 2023: </strong>
-            <span>{user.Comments_2023}</span>
+            <span>{user.comments_2023}</span>
             <br />
             <br />
             <Link to="#rating-bar-chart" className="chart-link">View Ratings Chart</Link>

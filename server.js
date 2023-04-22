@@ -152,7 +152,7 @@ app.post("/api/post", async (req, res) => {
       // Insert the project performance review data
       const insertProjectPerformanceReviewQuery = `
         INSERT INTO project_performance_review (employee_id, project_name, year, rating, salary, comments,performance_review_date)
-        VALUES (?, ?, ?, ?, ?, ?,curdate());
+        VALUES (?, ?, ?, ?, ?, ?,?);
       `;
 
       for (let project of projects) {
@@ -324,6 +324,7 @@ app.get("/api/get/:EID", (req, res) => {
 //   }
 // });
 
+let performance_review_date = new Date();
 app.put("/api/update/:EID", async (req, res) => {
   const { EID } = req.params;
   const { Name, Email, years } = req.body;
@@ -363,7 +364,7 @@ app.put("/api/update/:EID", async (req, res) => {
         console.log('Employee update salary:', salaryResult);
       }
 
-      if (rating !== null || Comments !== undefined) {
+       if (rating !== null || Comments !== undefined) {
         console.log('Year object:', yearObj);
         const insertOrUpdatePerformanceReviewQuery = `
           INSERT INTO performance_review (EID, performance_review_date, reviewer_name, rating, Comments)
@@ -374,7 +375,7 @@ app.put("/api/update/:EID", async (req, res) => {
         `;
         const [performanceResult] = await connection.query(insertOrUpdatePerformanceReviewQuery, [EID, new Date(), 'sindhu', rating, Comments]);
         console.log('Employee update Performance:', performanceResult);
-      }
+       }
       
       // Update project_employee and project_performance_review data
       for (let project of projects) {

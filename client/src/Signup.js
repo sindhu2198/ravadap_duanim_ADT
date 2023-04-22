@@ -30,12 +30,9 @@ const Signup = () => {
   
 
   return (
-    <div className="report-background">
-      <div className="app">
-        <header className="header">
-          <Hamburgermenu />
-          <div className="logo">SKILL SNAPSHOT</div>
-        </header>
+    <div className="report-background1">
+      <div className="app">       
+    
       </div>
     <div style={{ marginTop: "25px" }}>
       <form
@@ -47,7 +44,8 @@ const Signup = () => {
         }}
         onSubmit={handleSubmit}
       >
-
+          <div className="form-container">
+       <h1>Signup</h1>
       <label htmlFor="username">Username:</label>
       <input
         type="text"
@@ -87,11 +85,13 @@ const Signup = () => {
         <option value="admin">Admin</option>
       </select>
 
-      <button type="submit">Register</button>
+      <button type="submit" className="submit-btn">Register</button>
+     </div>
     </form>
     
     </div>
     </div>
+    
   );
 };
 

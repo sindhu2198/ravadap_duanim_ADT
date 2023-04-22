@@ -42,6 +42,18 @@
   background-color: #f0f2f5;
 }
 
+.report-background1 {
+  background-image: url("./Images/wallpaper1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
 .form-container {
   width: 100%;
   max-width: 600px;
