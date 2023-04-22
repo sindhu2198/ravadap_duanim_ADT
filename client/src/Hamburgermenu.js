@@ -34,7 +34,7 @@ const Hamburgermenu = () => {
           <a href="/Create">CREATE EMPLOYEE</a>
           <a href="/GetEmp">GET EMPLOYEE</a>
           <a href="/fetch">UPDATE EMPLOYEE</a>
-          <a href="/delete">DELETE EMPLOYEE</a>
+          <a href="/fetchemp">DELETE EMPLOYEE</a>
           <a href="/GetAllEmp">GET ALL EMPLOYEES</a>
         </div>
       )}

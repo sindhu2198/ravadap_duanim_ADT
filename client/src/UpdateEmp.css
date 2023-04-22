@@ -1,0 +1,104 @@
+.update-employee {
+    background-image: url("./Images/lofi.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* 60px is an approximate height for the header */
+    background-color: #f6f6f6;
+    padding-top: 3em; /* Add a gap of 3 lines */
+  }
+  
+
+  .delete-employee {
+    background-image: url("./Images/employeegoodbye.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* 60px is an approximate height for the header */
+    background-color: #f6f6f6;
+    padding-top: 3em; /* Add a gap of 3 lines */
+  }
+  .card-update {
+    width: 40%;
+    background-color: white;
+    padding: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+     
+  }
+  
+  .card-header {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    font-weight: 500;
+  }
+  
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  form button {
+    padding: 14px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 8px 0;
+    width: 100%;
+  }
+  
+  form button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  form button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+  }
+  
+  form button[type="button"]:hover {
+    background-color: #d32f2f;
+  }
+  .popup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+  

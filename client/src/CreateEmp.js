@@ -10,7 +10,7 @@ const initialState = {
   Email: "",
   years: [
     {
-      year: "2023",
+      year: "",
       projects: [],
       rating: "",
       salary: "",
@@ -28,14 +28,20 @@ const CreateEmp = () => {
   const hasEmptyProjectName = years.some((yearObj) => {
     return yearObj.projects.some((project) => !project);
   });
+  const hasInvalidRating = years.some((yearObj) => {
+    return parseInt(yearObj.rating) > 10;
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!Name || !Email) {
       toast.error("Please provide value into each input field");
-    }else if (hasEmptyProjectName) {
+    } else if (hasEmptyProjectName) {
       toast.error("Please provide a project name for each project");
     }
-       else {
+    else if (hasInvalidRating) {
+      toast.error("Rating should be less than or equal to 10");
+    }
+     else {
       axios
         .post("http://localhost:5001/api/post", {
           Name,
@@ -43,15 +49,29 @@ const CreateEmp = () => {
           years
         })
         .then(() => {
-          setState(initialState);
+          // Create a new state object with the same structure as initialState
+          setState({
+            Name: "",
+            Email: "",
+            years: [
+              {
+                year: "",
+                projects: [],
+                rating: "",
+                salary: "",
+                Comments: ""
+              },
+            ],
+          });
           toast.success("Contact Added Successfully");
           window.alert("Employee Created Successfully");
         })
         .catch((err) => toast.error(err.response.data));
-
+  
       setTimeout(() => navigate("/Create"), 500);
     }
   };
+  
 
 
     // Update locations and projects based on the selected year
@@ -110,8 +130,14 @@ const CreateEmp = () => {
     <div className="app">
       <header className="header">
         <Hamburgermenu />
-        <div className="logo">SKILL SNAPSHOT</div>
+        <div className="logo">SKILL SNAPSHOT
+        <Link to="/signout">
+        <button className="signout-button">Sign Out</button>
+      </Link>
+        </div>
+       
       </header>
+      
     </div>
     <div className="form-container">
       <form className="employee-form" onSubmit={handleSubmit}>
@@ -195,6 +221,7 @@ const CreateEmp = () => {
             placeholder={`Employee Rating in ${yearObj.year} ...`}
             value={yearObj.rating || ""}
             onChange={(e) => handleInputChange(e, index)}
+            max="10"
           />
 </div>
 <div className="yearAttributes">

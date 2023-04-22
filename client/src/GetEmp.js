@@ -77,10 +77,21 @@ const RatingBarChart = ({ data }) => {
    
       <div className="app">
       
-        <div className="logo">SKILL SNAPSHOT</div>
-      
+       
     </div>
       <div className="card">
+      <div className="app">
+      <header className="header">
+        <Hamburgermenu />
+        <div className="logo">SKILL SNAPSHOT
+        <Link to="/signout">
+        <button className="signout-button">Sign Out</button>
+      </Link>
+        </div>
+       
+      </header>
+      
+    </div>
         <div className="card-header">
           <p>Employee Details</p>
         </div>

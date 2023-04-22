@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Hamburgermenu from "./Hamburgermenu";
-import "./CreateEmp.css";
+import "./UpdateEmp.css";
 
 const UpdateEmp = () => {
   const [user, setUser] = useState({
@@ -23,6 +23,7 @@ const UpdateEmp = () => {
     comments_2023: "",
   });
   const { EID } = useParams();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const UpdateEmp = () => {
         .then((resp) => {
           if (resp.data.length > 0) {
             setUser(resp.data[0]);
+            
           } else {
             console.error("Employee not found");
           }
@@ -87,12 +89,20 @@ const UpdateEmp = () => {
   };
 
   return (
-    <div className="create-employee">
+    <div className="update-employee">
+       <div className="app">
       <header className="header">
         <Hamburgermenu />
-        <div className="logo">SKILL SNAPSHOT</div>
+        <div className="logo">SKILL SNAPSHOT
+        <Link to="/signout">
+        <button className="signout-button">Sign Out</button>
+      </Link>
+        </div>
+       
       </header>
-      <div className="card">
+      
+    </div>
+      <div className="card-update">
         <div className="card-header">
           <p>Update Employee Details</p>
         </div>
@@ -124,32 +134,33 @@ const UpdateEmp = () => {
             onChange={handleChange}
           />
           <br />
-          <label htmlFor="rating_2023">Projects in 2023 (if any): </label>
-<input
-  type="text"
-  id="projects_2023"
-  name="projects_2023"
-  value={user.projects_2023}
-  onChange={handleChange}
-/>
+          <label htmlFor="projects_2023">Projects in 2023 (if any): </label>
+<select id="projects_2023" name="projects_2023" value={user.projects_2023} onChange={handleChange}>
+  <option value="">-- Select project --</option>
+  <option value="Project A">Project A</option>
+  <option value="Project B">Project B</option>
+  <option value="Project C">Project C</option>
+  {/* Add more options as needed */}
+</select>
+
 <br />
-<label htmlFor="projects_2022">projects in 2022 (if any): </label>
-<input
-  type="text"
-  id="projects_2022"
-  name="projects_2022"
-  value={user.projects_2022}
-  onChange={handleChange}
-/>
+<label htmlFor="projects_2022">Projects in 2022 (if any): </label>
+<select id="projects_2022" name="projects_2022" value={user.projects_2022} onChange={handleChange}>
+  <option value="">-- Select project --</option>
+  <option value="Project A">Project A</option>
+  <option value="Project B">Project B</option>
+  <option value="Project C">Project C</option>
+  {/* Add more options as needed */}
+</select>
 <br />
-<label htmlFor="projects_2021">projects in 2021 (if any): </label>
-<input
-  type="text"
-  id="projects_2021"
-  name="projects_2021"
-  value={user.projects_2021}
-  onChange={handleChange}
-/>
+<label htmlFor="projects_2021">Projects in 2021 (if any): </label>
+<select id="projects_2021" name="projects_2021" value={user.projects_2021} onChange={handleChange}>
+  <option value="">-- Select project --</option>
+  <option value="Project A">Project A</option>
+  <option value="Project B">Project B</option>
+  <option value="Project C">Project C</option>
+  {/* Add more options as needed */}
+</select>
 <br />
           <label htmlFor="rating_2023">Rating in 2023 (if any): </label>
 <input
@@ -250,9 +261,3 @@ const UpdateEmp = () => {
         };
         
         export default UpdateEmp;
-
-
-
-
-
-        

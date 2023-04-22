@@ -1,16 +1,45 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, Route } from "react-router-dom";
 import Hamburgermenu from "./Hamburgermenu";
 import "./FetchEmp.css";
+import axios from "axios";
 
 const FetchEmp = () => {
   const [inputID, setInputID] = useState("");
+  const [noEmployee, setNoEmployee] = useState(false);
   const navigate = useNavigate();
 
-  const handleIDSubmit = (e) => {
+  const fetchEmployeeData = async (id) => {
+    try {
+      console.log("id",id);
+      const response = await axios.get(`http://localhost:5001/api/get/${id}`);
+      console.log(response.data);
+      console.log("response.status",response.status);
+      if (response.status === 200) {
+        const employeeData = response.data;
+        if (employeeData && employeeData[0].EID) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error("Error fetching employee data:", error);
+      return false;
+    }
+  };
+
+  const handleIDSubmit = async (e) => {
     e.preventDefault();
     if (inputID) {
-      navigate(`/update/${inputID}`);
+      const employeeExists = await fetchEmployeeData(inputID);
+      if (employeeExists) {
+        console.log("Employee exists, navigating to UpdateEmp");
+        navigate(`/update/${inputID}`);
+      } else {
+        console.log("Employee does not exist, navigating to NoEmployee");
+        setNoEmployee(true);
+        navigate("/no-employee");
+      }
     }
   };
 
@@ -19,10 +48,15 @@ const FetchEmp = () => {
       <div className="app">
         <header className="header">
           <Hamburgermenu />
-          <div className="logo">SKILL SNAPSHOT</div>
+          <div className="logo">
+            SKILL SNAPSHOT
+            <Link to="/signout">
+              <button className="signout-button">Sign Out</button>
+            </Link>
+          </div>
         </header>
       </div>
-     
+
       <div className="form-container">
         <form className="employee-form" onSubmit={handleIDSubmit}>
           <h2>Enter Employee ID</h2>
@@ -40,6 +74,7 @@ const FetchEmp = () => {
           <input type="submit" className="submit-btn" value="Submit" />
         </form>
       </div>
+      {noEmployee && <p>No employee found</p>}
     </div>
   );
 };

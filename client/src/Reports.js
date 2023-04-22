@@ -19,12 +19,18 @@ const Reports = () => {
 
   return (
     <div className="report-background">
-      <div className="app">
-        <header className="header">
-          <Hamburgermenu />
-          <div className="logo">SKILL SNAPSHOT</div>
-        </header>
-      </div>
+       <div className="app">
+      <header className="header">
+        <Hamburgermenu />
+        <div className="logo">SKILL SNAPSHOT
+        <Link to="/signout">
+        <button className="signout-button">Sign Out</button>
+      </Link>
+        </div>
+       
+      </header>
+      
+    </div>
       <div className="get-started">
       <Link to="/Create">
         <button className="get-started-btn">GET STARTED</button>

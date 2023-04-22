@@ -53,6 +53,23 @@
   min-height: 100vh;
   background-color: #f0f2f5;
 }
+.report-background2 {
+  background-image: url("./Images/resign.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-size: large;
+  top: 20;
+  left: 50%;
+  color: rgb(0, 0, 0);
+  
+}
+
 
 .form-container {
   width: 100%;
@@ -195,4 +212,23 @@ select {
   background-color: #e82764;
   margin-bottom: 10px;
 }
+
+.signout-button {
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.signout-button:hover {
+  background-color: #d32f2f; /* Darker red */
+}
+
 

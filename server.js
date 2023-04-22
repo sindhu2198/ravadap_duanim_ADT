@@ -221,108 +221,7 @@ app.get("/api/get/:EID", (req, res) => {
   });
 });
 
-// app.put("/api/update/:EID", async (req, res) => {
-//   const { EID } = req.params;
-//   const { Name, Email, years } = req.body;
-  
-//   console.log('Request body:', req.body);
-//   // Get a connection from the pool
-//   const connection = await db.promise().getConnection();
 
-//   try {
-//     // Begin transaction
-//     await connection.beginTransaction();
-
-//     // Update employee's name and email
-//     const updateEmployeeQuery = `
-//       UPDATE employee
-//       SET Name = ?, Email = ?
-//       WHERE EID = ?
-//     `;
-//     const [employeeResult] = await connection.query(updateEmployeeQuery, [Name, Email, EID]);
-//     console.log('Employee update result:', employeeResult);
-   
-
-//     // Loop through years data
-//     for (let yearObj of years) {
-//       const { year, projects, rating, salary, Comments } = yearObj;
-      
-//       // Update salary data
-//       if (salary !== null) {
-//         const updateSalaryQuery = `
-//           UPDATE salary
-//           SET salary = ?
-//           WHERE EID = ? AND year = ?
-//         `;
-//         const [salaryResult] = await connection.query(updateSalaryQuery, [salary, EID, year]);
-//         console.log('Employee update salary:', salaryResult);
-//       }
-
-//       // Update performance review data
-//       if (rating !== null && Comments !== null) {
-//         const updatePerformanceReviewQuery = `
-//           UPDATE performance_review
-//           SET rating = ?, Comments = ?
-//           WHERE EID = ? AND YEAR(performance_review_date) = ?
-//         `;
-//         const [performanceResult] = await connection.query(updatePerformanceReviewQuery, [rating, Comments, EID, year]);
-//         console.log('Employee update Performance:', performanceResult);
-//       }
-
-//       // Update project_employee data
-//       for (let project of projects) {
-
-//         const checkProjectPerformanceReviewQuery = `
-//         SELECT * FROM project_performance_review
-//         WHERE employee_id = ? AND year = ?
-//       `;
-//       const [checkProjectPerformanceReviewResult] = await connection.query(checkProjectPerformanceReviewQuery, [EID, year, project]);
-//       console.log('Check project_performance_review before update:', checkProjectPerformanceReviewResult);
-//         const updateProjectEmployeeQuery = `
-//           UPDATE project_employee
-//           SET project_name = ?
-//           WHERE EID = ? AND year = ?
-//         `;
-//         const [projectEmployeeResult] = await connection.query(updateProjectEmployeeQuery, [project, EID, year]);
-//         console.log('Employee update project_employee:', projectEmployeeResult);
-//       }
-
-//       // Update project_performance_review data
-//       for (let project of projects) {
-//         if (rating !== null || salary !== null || Comments !== null) {
-//           console.log("project", project);
-//           const updateProjectPerformanceReviewQuery = `
-//             UPDATE project_performance_review
-//             SET rating = COALESCE(?, rating), salary = COALESCE(?, salary), Comments = COALESCE(?, Comments), project_name = COALESCE(?, project_name)
-//             WHERE employee_id = ? AND year = ?
-//           `;
-//           console.log('Updating project_performance_review with values:', rating, salary, Comments,project, EID, year );
-// const [projectPerformanceResult] = await connection.query(updateProjectPerformanceReviewQuery, [rating !== null ? rating : null, salary !== null ? salary : null, Comments !== undefined ? Comments : null,project!== undefined ? project : null, EID, year]);
-
-          
-//           console.log('Employee update project_performance_review:', projectPerformanceResult);
-//         }
-//       }
-      
-//     }
-
-//     // Commit transaction
-//     await connection.commit();
-
-//     // Send success response
-//     res.sendStatus(200);
-
-//   } catch (err) {
-//     // Roll back transaction if an error occurred
-//     await connection.rollback();
-
-//     console.error("Error in /api/update/:EID:", err);
-//     res.status(500).send(err);
-//   } finally {
-//     // Release the connection back to the pool
-//     connection.release();
-//   }
-// });
 
 let performance_review_date = new Date();
 app.put("/api/update/:EID", async (req, res) => {
@@ -433,6 +332,72 @@ app.put("/api/update/:EID", async (req, res) => {
     }
     });
 
+
+
+
+    app.delete("/api/delete/:EID", async (req, res) => {
+      const { EID } = req.params;
+    
+      // Get a connection from the pool
+      const connection = await db.promise().getConnection();
+    
+      try {
+        // Begin transaction
+        await connection.beginTransaction();
+    
+        // Delete employee data
+        const deleteEmployeeQuery = `
+           DELETE FROM employee WHERE EID = ?
+        `;
+        const [employeeResult] = await connection.query(deleteEmployeeQuery, [EID]);
+        console.log('Employee delete result:', employeeResult);
+    
+        // Delete salary data
+        const deleteSalaryQuery = `
+          DELETE FROM salary WHERE EID = ?
+        `;
+        const [salaryResult] = await connection.query(deleteSalaryQuery, [EID]);
+        console.log('Salary delete result:', salaryResult);
+    
+        // Delete performance review data
+        const deletePerformanceReviewQuery = `
+          DELETE FROM performance_review WHERE EID = ?
+        `;
+        const [performanceResult] = await connection.query(deletePerformanceReviewQuery, [EID]);
+        console.log('Performance review delete result:', performanceResult);
+    
+        // Delete project data
+        const deleteProjectQuery = `
+          DELETE FROM project_employee WHERE EID = ?
+        `;
+        const [projectEmployeeResult] = await connection.query(deleteProjectQuery, [EID]);
+        console.log('Project employee delete result:', projectEmployeeResult);
+    
+        // Delete project performance review data
+        const deleteProjectPerformanceReviewQuery = `
+          DELETE FROM project_performance_review WHERE employee_id = ?
+        `;
+        const [projectPerformanceResult] = await connection.query(deleteProjectPerformanceReviewQuery, [EID]);
+        console.log('Project performance review delete result:', projectPerformanceResult);
+    
+        // Commit transaction
+        await connection.commit();
+    
+        // Send success response
+        res.sendStatus(200);
+    
+      } catch (err) {
+        // Roll back transaction if an error occurred
+        await connection.rollback();
+    
+        console.error("Error in /api/delete/:EID:", err);
+        res.status(500).send(err);
+      } finally {
+        // Release the connection back to the pool
+        connection.release();
+      }
+    });
+    
 
 
 app.get("/", (req, res) => {
