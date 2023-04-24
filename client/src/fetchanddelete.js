@@ -2,16 +2,45 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Hamburgermenu from "./Hamburgermenu";
 import "./FetchEmp.css";
+import axios from "axios";
 
 const FetchEmpanddelete = () => {
   const [inputID, setInputID] = useState("");
+  const [noEmployee, setNoEmployee] = useState(false);
   const navigate = useNavigate();
 
-  const handleIDSubmit = (e) => {
-    e.preventDefault();
-    if (inputID) {
-      navigate(`/delete/${inputID}`);
+
+  const fetchEmployeeData = async (id) => {
+    try {
+      console.log("id",id);
+      const response = await axios.get(`http://localhost:5001/api/get/${id}`);
+      console.log(response.data);
+      console.log("response.status",response.status);
+      if (response.status === 200) {
+        const employeeData = response.data;
+        if (employeeData && employeeData[0].EID) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error("Error fetching employee data:", error);
+      return false;
     }
+  };
+  const handleIDSubmit = async (e) => {
+    e.preventDefault();
+       if (inputID) {
+        const employeeExists = await fetchEmployeeData(inputID);
+        if (employeeExists) {
+          console.log("Employee exists, navigating to UpdateEmp");
+          navigate(`/delete/${inputID}`);
+        } else {
+          console.log("Employee does not exist, navigating to NoEmployee");
+          setNoEmployee(true);
+          navigate("/no-employee");
+        }
+      }
   };
 
   return (

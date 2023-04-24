@@ -89,7 +89,7 @@ const GetAllEmp = () => {
             </tbody>
           </table>
         </div>
-        <Link to="/GetAllEmp">
+        <Link to="/Reports">
           <div className="btn btn-edit">Go Back</div>
         </Link>
       </div>
