@@ -29,7 +29,7 @@ const DeleteEmp = () => {
   useEffect(() => {
     if (EID) {
       axios
-        .get(`http://localhost:5001/api/get/${EID}`)
+        .get(`https://skill-snapshot-frontend.onrender.com/api/get/${EID}`)
         .then((resp) => {
           if (resp.data.length > 0) {
             setUser(resp.data[0]);
@@ -80,7 +80,7 @@ const DeleteEmp = () => {
           ],
       };
 
-      await axios.delete(`http://localhost:5001/api/delete/${EID}`, updatedUser);
+      await axios.delete(`https://skill-snapshot-frontend.onrender.com/api/delete/${EID}`, updatedUser);
       alert("Employee details deleted successfully.");
       navigate("/fetchemp");
     } catch (error) {

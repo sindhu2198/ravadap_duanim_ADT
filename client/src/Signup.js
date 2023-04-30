@@ -18,7 +18,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/signup', formData);
+      await axios.post('https://skill-snapshot-frontend.onrender.com/signup', formData);
       alert('User registered successfully.');
       navigate('/'); // Navigate to the homepage after successful registration
     }catch (error) {

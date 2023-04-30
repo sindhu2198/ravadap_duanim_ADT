@@ -12,7 +12,7 @@ const FetchEmp = () => {
   const fetchEmployeeData = async (id) => {
     try {
       console.log("id",id);
-      const response = await axios.get(`http://localhost:5001/api/get/${id}`);
+      const response = await axios.get(`https://skill-snapshot-frontend.onrender.com/api/get/${id}`);
       console.log(response.data);
       console.log("response.status",response.status);
       if (response.status === 200) {

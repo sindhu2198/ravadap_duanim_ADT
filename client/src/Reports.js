@@ -9,7 +9,7 @@ const Reports = () => {
   const [data, setData] = useState([]);
 
   const loadData = async () => {
-    const response = await axios.get("http://localhost:5001/api/get");
+    const response = await axios.get("https://skill-snapshot-frontend.onrender.com/api/get");
     setData(response.data);
   };
 

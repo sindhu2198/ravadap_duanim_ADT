@@ -50,7 +50,7 @@ const RatingBarChart = ({ data }) => {
       console.log("EID value:", EID); // Add this line
       if (EID) {
         axios
-          .get(`http://localhost:5001/api/get/${EID}`)
+          .get(`https://skill-snapshot-frontend.onrender.com/api/get/${EID}`)
           .then((resp) => {
             if (resp.data.length > 0) {
               setUser({ ...resp.data[0] });

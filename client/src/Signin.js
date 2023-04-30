@@ -18,7 +18,7 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/signin', formData);
+      const response = await axios.post('https://skill-snapshot-frontend.onrender.com/signin', formData);
       console.log(response.data);
       localStorage.setItem('token', response.data.token);
       alert('Signin successfully done.');

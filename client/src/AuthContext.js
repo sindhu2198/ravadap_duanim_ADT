@@ -5,12 +5,12 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({ user: null, isAuthenticated: false });
-
+  var backendurl='https://skill-snapshot-frontend.onrender.com';
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       axios
-        .get('http://localhost:5001/user', {
+        .get('https://skill-snapshot-frontend.onrender.com/user' , {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

@@ -4,6 +4,7 @@ import Hamburgermenu from "./Hamburgermenu";
 import "./FetchEmp.css";
 import axios from "axios";
 
+var backendurl='https://skill-snapshot-frontend.onrender.com';
 const FetchEmpanddelete = () => {
   const [inputID, setInputID] = useState("");
   const [noEmployee, setNoEmployee] = useState(false);
@@ -13,7 +14,7 @@ const FetchEmpanddelete = () => {
   const fetchEmployeeData = async (id) => {
     try {
       console.log("id",id);
-      const response = await axios.get(`http://localhost:5001/api/get/${id}`);
+      const response = await axios.get(`${backendurl}/api/get/${id}`);
       console.log(response.data);
       console.log("response.status",response.status);
       if (response.status === 200) {

@@ -9,7 +9,7 @@ const GetAllEmp = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/get")
+      .get("https://skill-snapshot-frontend.onrender.com/api/get")
       .then((resp) => {
         setEmployees(resp.data);
       })
