@@ -16,8 +16,9 @@ const FetchEmp = () => {
       console.log(response.data);
       console.log("response.status",response.status);
       if (response.status === 200) {
-        const employeeData = response.data;
-        if (employeeData && employeeData[0].EID) {
+        const employeeData = response.data[0][0];
+        console.log("fetchemp",employeeData)
+        if (employeeData && employeeData.EID) {
           return true;
         }
       }

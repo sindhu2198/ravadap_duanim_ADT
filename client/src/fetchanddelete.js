@@ -10,16 +10,19 @@ const FetchEmpanddelete = () => {
   const [noEmployee, setNoEmployee] = useState(false);
   const navigate = useNavigate();
 
-
   const fetchEmployeeData = async (id) => {
     try {
-      console.log("id",id);
-      const response = await axios.get(`${backendurl}/api/get/${id}`);
+      console.log("id", id);
+      const response = await axios.get(
+        `https://skill-snapshot-frontend.onrender.com/api/get/${id}`
+      );
       console.log(response.data);
-      console.log("response.status",response.status);
+      console.log("response.status", response.status);
       if (response.status === 200) {
-        const employeeData = response.data;
-        if (employeeData && employeeData[0].EID) {
+        console.log("fetch emp before", response.data);
+        const employeeData = response.data[0][0];
+        console.log("fetch",employeeData)
+        if (employeeData && employeeData.EID) {
           return true;
         }
       }
@@ -29,6 +32,7 @@ const FetchEmpanddelete = () => {
       return false;
     }
   };
+  
   const handleIDSubmit = async (e) => {
     e.preventDefault();
        if (inputID) {
