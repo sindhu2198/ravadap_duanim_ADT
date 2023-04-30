@@ -54,7 +54,7 @@ const RatingBarChart = ({ data }) => {
           .then((resp) => {
             if (resp.data.length > 0) {
               console.log("Employees data:", resp.data);
-              setUser({ ...resp.data[0] });
+              setUser({ ...resp.data[0][0] });
             } else {
               console.error("Employee not found");
             }
