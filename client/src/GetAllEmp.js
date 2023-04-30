@@ -65,8 +65,7 @@ const GetAllEmp = () => {
             </thead>
             <tbody>
               {employees.map((employee) => 
-               console.log(employee)(
-               
+              (               
                 <tr key={employee.EID}>
                   <td>{employee.EID}</td>
                   <td>{employee.Name}</td>
