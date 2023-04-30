@@ -12,7 +12,7 @@ const GetAllEmp = () => {
       .get("https://skill-snapshot-frontend.onrender.com/api/getAllEmployeeDetails")
       .then((resp) => {
         console.log("Employees data:", resp.data);
-        setEmployees(resp.data);
+        setEmployees(resp.data[0]);
       })
       .catch((error) => {
         console.error("Error fetching employees:", error);
