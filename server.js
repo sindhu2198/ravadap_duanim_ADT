@@ -91,7 +91,7 @@ app.post('/signin', (req, res) => {
 });
 
 app.get("/api/get", (req, res) => {
-  const sqlGet = "SELECT * FROM get_employee_details";
+  const sqlGet = "CALL get_all_employee_details()";
   db.query(sqlGet, (error, result) => {
     res.send(result);
   });
@@ -211,8 +211,8 @@ app.delete("/api/remove/:id", (req, res) => {
 app.get("/api/get/:EID", (req, res) => {
   const { EID } = req.params;
   console.log("Requested EID:", EID); // Log the requested EID
-  const sqlGet = "SELECT * FROM get_employee_details WHERE EID = ?";
-  db.query(sqlGet, EID, (error, result) => {
+  const sqlGet = "CALL get_employee_details(?)";
+  db.query(sqlGet, [EID], (error, result) => {
     if (error) {
       console.log(error);
     }
