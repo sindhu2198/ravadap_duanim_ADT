@@ -43,7 +43,7 @@ const CreateEmp = () => {
     }
      else {
       axios
-        .post("http://localhost:5001/api/post", {
+        .post("https://skill-snapshot-frontend.onrender.com/api/post", {
           Name,
           Email,
           years
