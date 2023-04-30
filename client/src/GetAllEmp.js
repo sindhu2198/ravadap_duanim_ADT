@@ -9,8 +9,9 @@ const GetAllEmp = () => {
 
   useEffect(() => {
     axios
-      .get("https://skill-snapshot-frontend.onrender.com/api/get")
+      .get("https://skill-snapshot-frontend.onrender.com/api/getAllEmployeeDetails")
       .then((resp) => {
+        console.log("Employees data:", resp.data);
         setEmployees(resp.data);
       })
       .catch((error) => {
@@ -63,7 +64,9 @@ const GetAllEmp = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {employees.map((employee) => 
+               console.log(employee)(
+               
                 <tr key={employee.EID}>
                   <td>{employee.EID}</td>
                   <td>{employee.Name}</td>

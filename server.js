@@ -96,12 +96,19 @@ app.post('/signin', (req, res) => {
   );
 });
 
-app.get("/api/get", (req, res) => {
+app.get("/api/getAllEmployeeDetails", (req, res) => {
   const sqlGet = "CALL get_all_employee_details()";
   db.query(sqlGet, (error, result) => {
-    res.send(result);
+    if (error) {
+      console.error("Error executing the stored procedure:", error); // Added console.error() for error handling
+      res.status(500).send("Error executing the stored procedure");
+    } else {
+      console.log("Stored procedure executed successfully"); // Added console.log() for successful execution
+      res.send(result);
+    }
   });
 });
+
 
 // ... other imports and configurations
 
