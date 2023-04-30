@@ -32,6 +32,7 @@ const UpdateEmp = () => {
         .get(`https://skill-snapshot-frontend.onrender.com/api/get/${EID}`)
         .then((resp) => {
           if (resp.data.length > 0) {
+            console.log(resp.data);
             setUser(resp.data[0]);
             
           } else {
